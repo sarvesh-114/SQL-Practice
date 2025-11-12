@@ -44,7 +44,26 @@ from rental
 group by rollup (year, month)
 order by year, month
 
+ /* Problem 2Emily would like data about memberships purchased in 2023, with 
+subtotals and grand totals for all the different combinations of membership 
+types and months.
+ Display the total revenue from memberships purchased in 2023 for each 
+combination of month and membership type. Generate subtotals and 
+grand totals for all possible combinations.  There should be 3 columns: 
+membership_type_name , 
+month , and 
+total_revenue .
+ Sort the results by membership type name alphabetically and then 
+chronologically by month */
 
+--Answer 1
+select name,
+extract(month from start_date) as month,
+sum(total_paid) as total_amt
+from membership as m join membership_type as mt
+on mt.id = m.membership_type_id
+group by grouping sets((name, month), (name))
+order by name, month
 
 
 
