@@ -67,6 +67,18 @@ from parent_child_status
 order by parent_id, status) as e
 where e.rn = 1;
 
+--Answer 4
+select a.parent_id
+, case when b.status is null 
+then 'InActive' 
+else b.status end as status
+from (select distinct parent_id from parent_child_status) a
+left join ( select distinct parent_id, status 
+from parent_child_status
+where status = 'Active') b 
+on b.parent_id = a.parent_id
+order by a.parent_id;
+
 
 
 
