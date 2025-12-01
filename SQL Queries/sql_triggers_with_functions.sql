@@ -49,3 +49,26 @@ where emp_id = 1
 
 select * from employees;
 select * from employee_records;
+
+
+
+create or replace function prevent_delete()
+returns trigger as 
+$$
+begin
+if old.department = 'IT' then
+raise exception 'deleting employees from IT department is not allow';
+end if;
+return old;
+end
+$$
+language plpgsql;
+
+
+create trigger prevent_delete_trigger
+before delete on employees
+for each row
+execute function prevent_delete()
+
+delete from employees
+where department = 'IT';
