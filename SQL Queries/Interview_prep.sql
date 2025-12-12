@@ -226,3 +226,4 @@ insert into test_scores values (8, 5, 15, CURRENT_DATE, CURRENT_DATE);
 insert into test_scores values (8, 6, 20, CURRENT_DATE, CURRENT_DATE);
 insert into test_scores values (9, 13, 25, CURRENT_DATE, CURRENT_DATE);
 insert into test_scores values (9, 14, 35, CURRENT_DATE, CURRENT_DATE);
+
