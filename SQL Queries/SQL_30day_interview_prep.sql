@@ -47,3 +47,32 @@ from cte
 select brand1, brand2, year, custom1, custom2, custom3, custom4 from cte_en
 where rank = 1 
 or (custom1 <> custom3 and custom2 <> custom4)
+
+
+--PROBLEM STATEMENT: Write a sql query to return the footer values from input table, 
+-- meaning all the last non null values from each field as shown in expected output.
+
+
+DROP TABLE IF EXISTS footer;
+CREATE TABLE footer 
+(
+	id 			INT PRIMARY KEY,
+	car 		VARCHAR(20), 
+	length 		INT, 
+	width 		INT, 
+	height 		INT
+);
+
+INSERT INTO FOOTER VALUES (1, 'Hyundai Tucson', 15, 6, NULL);
+INSERT INTO FOOTER VALUES (2, NULL, NULL, NULL, 20);
+INSERT INTO FOOTER VALUES (3, NULL, 12, 8, 15);
+INSERT INTO FOOTER VALUES (4, 'Toyota Rav4', NULL, 15, NULL);
+INSERT INTO FOOTER VALUES (5, 'Kia Sportage', NULL, NULL, 18); 
+
+
+-- Solution 1
+select * from (select car from footer where car is not null order by id desc limit 1) as car
+cross join (select length from footer where length is not null order by id desc limit 1) as lenght
+cross join (select width from footer where width is not null order by id desc limit 1) as width
+cross join (select height from footer where height is not null order by id desc limit 1) as height
+
