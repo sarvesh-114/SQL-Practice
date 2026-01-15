@@ -85,6 +85,68 @@ CREATE TABLE works (
 select * from works;
 
 
+-- Fetch all the paintings which are not displayed on any museums?
+select * from work
+where museum_id is null;
+
+-- How many paintings have an asking price of more than their regular price? 
+select count(*) from product_size
+where sale_price > regular_price;
+
+-- Identify the paintings whose asking price is less than 50% of its regular price
+select * from product_size
+where sale_price < (regular_price/2);
+
+select * 
+from product_size
+where sale_price < (regular_price*0.5);
+
+-- Which canva size costs the most?
+select * from product_size;
+select * from canvas_size;
+
+
+-- Which canva size costs the most?
+select cs.label, ps.sale_Price from
+(
+	select *, 
+	rank() over(order by sale_price desc) as rn
+	from product_size
+) as ps
+join canvas_size as cs on cs.size_id::text= ps.size_id
+where ps.rn = 1
+
+
+-- Delete duplicate records from work
+delete from work
+where work_id in (
+select work_id
+from (
+select work_id,
+row_number() over (partition by work_id order by  work_id) as rn from work
+) t
+where rn > 1
+);
+
+-- Identify the museums with invalid city information in the given dataset
+select * from museums 
+
+delete from museums 
+where city ~ '^[0-9]';
+
+-- Identify the museums which are open on both Sunday and Monday. Display museum name, city
+select * from museums;
+select * from museum_hours;
+
+select m.name, m.city, m.country, mh.day
+from museums as m
+join
+museum_hours as mh on m.museum_id = mh.museum_id
+where mh.day = 'Sunday'
+and exists (select 1 from museum_hours mh2 
+where mh2.museum_id=mh.museum_id 
+and mh2.day='Monday');
+
 
 
 
