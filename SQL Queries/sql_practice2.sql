@@ -147,6 +147,63 @@ and exists (select 1 from museum_hours mh2
 where mh2.museum_id=mh.museum_id 
 and mh2.day='Monday');
 
+CREATE TABLE emp (
+id INT,
+name VARCHAR(100),
+salary INT
+);
+INSERT INTO emp (id, name, salary) VALUES
+(1, 'Amit', 90000),
+(2, 'Rahul', 75000),
+(3, 'Sneha', 90000),
+(4, 'Vijay', 65000),
+(5, 'Priya', 65000),
+(6, 'Karan', 80000),
+(7, 'Simran', 70000),
+(8, 'Rohan', 70000),
+(9, 'Meera', 60000);
+
+-- Write a query to find the employees who have the third highest salary. Return - id, name, salary
+select * from emp
+order by salary desc
+offset 2
+limit 1
+
+select id, name, salary from
+	(select *,
+	rank() over(order by salary desc) as rnk
+	from emp)
+where rnk = 3
+
+
+CREATE TABLE Consecutive (
+number INT
+);
+INSERT INTO Consecutive (number) VALUES
+(1),
+(2),
+(3),
+(5),
+(6),
+(7),
+(10),
+(11),
+(12),
+(13),
+(20);
+
+-- Write a query to find the length of the longest consecutive sequence of numbers.
+with cte as	
+	(select *,
+	row_number() over(order by number) as seq,
+	(number - row_number() over(order by number)) as diff
+	from Consecutive)
+
+select diff, count(*)
+from cte
+group by diff
+order by count(*) desc
+limit 1;
 
 
 
