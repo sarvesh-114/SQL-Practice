@@ -80,6 +80,36 @@ from layoff_satging2;
 update layoff_satging2
 set `date` = str_to_date(`date`, '%m/%d/%y');
 
+update layoff_satging2
+set industry = 'Travel'
+where company = 'Airbnb'
+and industry = '';
+
+alter table layoff_satging2
+drop column row_num;
+
+select *
+from layoff_satging2
+where percentage_laid_off = 1
+order by total_laid_off desc;
+
+select company, sum(total_laid_off) as laid_off
+from layoff_satging2
+group by 1
+order by 2 desc;
+
+select industry, sum(total_laid_off) as laid_off
+from layoff_satging2
+group by 1
+order by 2 desc;
+
+select country, sum(total_laid_off) as laid_off
+from layoff_satging2
+group by 1
+order by 2 desc;
+
+
+
 
 
 
